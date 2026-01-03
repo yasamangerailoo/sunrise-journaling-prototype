@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback | Sunrise</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .feedback-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .feedback-header h1 {
+            margin-bottom: 10px;
+        }
+
+        #feedbackJournalDate {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .feedback-card {
+            background: linear-gradient(135deg, #fff8e1, #e3f2fd);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 3px solid var(--secondary);
+        }
+
+        #feedbackContent {
+            line-height: 1.8;
+            font-size: 18px;
+            color: var(--text);
+            text-align: center;
+        }
+
+        .feedback-icon {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        .view-journal-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .view-journal-btn:hover {
+            background: #126782;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="feedback-container">
+        <div class="feedback-header">
+            <h1>💬 Your Feedback</h1>
+            <div id="feedbackJournalDate">Loading...</div>
+        </div>
+
+        <div class="feedback-card">
+            <div class="feedback-icon">✨</div>
+            <div id="feedbackContent">
+                <!-- Feedback will be loaded here -->
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="journal-history.html" class="back-btn">← Back to History</a>
+            <a href="journal-view.html" class="view-journal-btn">📖 View Journal</a>
+        </div>
+    </div>
+
+    <script src="js/journal.js"></script>
+    <script>
+        // Load feedback when page loads
+        loadJournalFeedback();
+    </script>
+
+</body>
+
+</html>

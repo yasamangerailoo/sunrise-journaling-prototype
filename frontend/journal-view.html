@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>View Journal | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .view-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .view-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .view-header h1 {
+            margin-bottom: 10px;
+        }
+
+        #journalDate {
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .journal-content-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        #journalContent {
+            line-height: 1.8;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        #journalContent p {
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        .feedback-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .feedback-btn:hover {
+            background: #e69500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="view-container">
+        <div class="view-header">
+            <h1>📖 Journal Entry</h1>
+            <div id="journalDate">Loading...</div>
+        </div>
+
+        <div class="journal-content-card">
+            <div id="journalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="journal-history.html" class="back-btn">← Back to History</a>
+            <a href="journal-feedback.html" class="feedback-btn">💬 View Feedback</a>
+        </div>
+    </div>
+
+    <script src="js/journal.js"></script>
+    <script>
+        // Load journal when page loads
+        loadSingleJournal();
+    </script>
+
+</body>
+
+</html>

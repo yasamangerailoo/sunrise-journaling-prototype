@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profile | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .profile-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .profile-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .profile-field {
+            margin-bottom: 20px;
+        }
+
+        .profile-label {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .profile-value {
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .profile-bio {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 15px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar-large" id="profileAvatar">U</div>
+            <h1 id="profileUsername">Loading...</h1>
+        </div>
+
+        <div class="profile-card">
+            <div class="profile-field">
+                <label class="profile-label">Email</label>
+                <div class="profile-value" id="profileEmail">Loading...</div>
+            </div>
+
+            <div class="profile-field">
+                <label class="profile-label">Bio</label>
+                <textarea id="profileBio" class="profile-bio" placeholder="Tell us about yourself..."></textarea>
+            </div>
+
+            <div class="profile-field">
+                <label class="profile-label">Member Since</label>
+                <div class="profile-value" id="profileCreated">Loading...</div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <a href="user-dashboard.html" class="back-btn">← Back to Dashboard</a>
+            <button onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+
+</body>
+
+</html>

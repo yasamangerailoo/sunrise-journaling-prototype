@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings | Sunrise</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .settings-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .settings-section {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .settings-section h2 {
+            color: var(--secondary);
+            font-size: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 10px;
+        }
+
+        .settings-field {
+            margin-bottom: 15px;
+        }
+
+        .settings-field:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 26px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: var(--secondary);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+
+        .danger-zone {
+            border: 2px solid #dc3545;
+            background: #fff5f5;
+        }
+
+        .danger-zone h2 {
+            color: #dc3545;
+        }
+
+        .danger-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .danger-btn:hover {
+            background: #c82333;
+        }
+
+        .save-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .save-btn:hover {
+            background: #126782;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1>⚙️ Settings</h1>
+            <p style="color: var(--muted);">Manage your account preferences</p>
+        </div>
+
+        <!-- Password Change Section -->
+        <div class="settings-section">
+            <h2>🔒 Change Password</h2>
+            
+            <div class="settings-field">
+                <label class="settings-label">Current Password</label>
+                <input type="password" id="currentPassword" class="settings-input" placeholder="Enter current password">
+            </div>
+
+            <div class="settings-field">
+                <label class="settings-label">New Password</label>
+                <input type="password" id="newPassword" class="settings-input" placeholder="Enter new password">
+            </div>
+
+            <div class="settings-field">
+                <label class="settings-label">Confirm New Password</label>
+                <input type="password" id="confirmPassword" class="settings-input" placeholder="Confirm new password">
+            </div>
+
+            <button class="save-btn" onclick="changePassword()">Update Password</button>
+        </div>
+
+        <!-- Notifications Section -->
+        <div class="settings-section">
+            <h2>🔔 Notifications</h2>
+            
+            <div class="toggle-container">
+                <span class="toggle-label">Email Notifications</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-container">
+                <span class="toggle-label">Journal Reminders</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="settings-section danger-zone">
+            <h2>⚠️ Danger Zone</h2>
+            <p style="color: var(--muted); margin-bottom: 15px;">
+                Once you delete your account, there is no going back. All your data will be permanently deleted.
+            </p>
+            <button class="danger-btn" onclick="deleteAccount()">Delete Account</button>
+        </div>
+
+        <div class="back-link">
+            <a href="user-dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+
+</body>
+
+</html>

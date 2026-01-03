@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Journal History | Sunrise</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .history-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .history-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .history-header h1 {
+            margin-bottom: 10px;
+        }
+
+        #journalList {
+            margin-bottom: 20px;
+        }
+
+        .journal-item {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .journal-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .journal-date {
+            font-weight: 600;
+            color: var(--secondary);
+            min-width: 100px;
+        }
+
+        .journal-preview {
+            flex: 1;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .journal-arrow {
+            font-size: 20px;
+            color: var(--muted);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .action-buttons a {
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+
+        .new-journal-btn {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .new-journal-btn:hover {
+            background: #126782;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="history-container">
+        <div class="history-header">
+            <h1>📚 Your Journals</h1>
+            <p style="color: var(--muted);">Your journey of self-reflection</p>
+        </div>
+
+        <div id="journalList">
+            <!-- Journals will be loaded here -->
+        </div>
+
+        <div class="action-buttons">
+            <a href="user-dashboard.html" class="back-btn">← Back to Dashboard</a>
+            <a href="journal-selection.html" class="new-journal-btn">✏️ New Journal</a>
+        </div>
+    </div>
+
+    <script src="js/journal.js"></script>
+    <script>
+        // Load journals when page loads
+        loadJournalHistory();
+    </script>
+
+</body>
+
+</html>

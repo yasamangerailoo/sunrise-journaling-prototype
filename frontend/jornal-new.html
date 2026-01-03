@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New Journal | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .journal-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .journal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .journal-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        textarea {
+            min-height: 300px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            padding: 12px;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+        }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="journal-container">
+        <div class="journal-header">
+            <h1>✍️ Write Your Journal</h1>
+            <p style="color: var(--muted);">Express your thoughts freely</p>
+        </div>
+
+        <div class="journal-card">
+            <label>Your Entry</label>
+            <textarea id="journalContent" placeholder="Write about your day, thoughts, feelings..."></textarea>
+
+            <div class="button-group">
+                <a href="journal-selection.html" class="cancel-btn" style="background: #6c757d;">Cancel</a>
+                <button onclick="saveSimpleJournal()">Save Journal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/journal.js"></script>
+
+</body>
+
+</html>

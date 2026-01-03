@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Template Journal | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .template-journal-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .template-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .template-title {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+
+        .template-description {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .prompts-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .prompt-item {
+            margin-bottom: 30px;
+        }
+
+        .prompt-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .prompt-question {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .prompt-answer {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 15px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            padding: 12px;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+
+        #loadingMessage {
+            text-align: center;
+            color: var(--muted);
+            padding: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="template-journal-container">
+        <div class="template-header">
+            <h1 class="template-title" id="templateTitle">Loading...</h1>
+            <p class="template-description" id="templateDescription"></p>
+        </div>
+
+        <div id="loadingMessage">
+            Loading template...
+        </div>
+
+        <div id="promptsContainer" style="display: none;">
+            <div class="prompts-card" id="promptsList">
+                <!-- Prompts will be loaded here -->
+            </div>
+
+            <div class="button-group">
+                <a href="jornal-templates.html" class="cancel-btn">Cancel</a>
+                <button onclick="saveTemplateJournal()">Save Journal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/journal.js"></script>
+    <script>
+        // Load template and prompts when page loads
+        loadTemplatePrompts();
+    </script>
+
+</body>
+
+</html>

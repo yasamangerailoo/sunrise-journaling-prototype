@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        /* استایل‌های اضافی برای Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            width: auto;
+            margin: 0;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .dashboard-card p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .container-full {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-full">
+        <!-- Header با اطلاعات کاربر -->
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
+                    <div class="user-name" id="userName">Loading...</div>
+                    <p style="font-size: 12px; color: var(--muted); margin: 0;">Welcome back!</p>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Grid کارت‌ها -->
+        <div class="dashboard-grid">
+
+            <div class="dashboard-grid">
+            
+            <a href="journal-selection.html" class="dashboard-card">
+                <div class="icon">📝</div>
+                <h3>Write New Journal</h3>
+                <p>Start your daily reflection</p>
+            </a>
+
+            <a href="journal-history.html" class="dashboard-card">
+                <div class="icon">📚</div>
+                <h3>View History</h3>
+                <p>See your past journals</p>
+            </a>
+
+            <a href="jornal-templates.html" class="dashboard-card">
+                <div class="icon">📋</div>
+                <h3>Templates</h3>
+                <p>Browse journal templates</p>
+            </a>
+
+            <a href="journal-feedback.html" class="dashboard-card">
+                <div class="icon">💬</div>
+                <h3>Feedback</h3>
+                <p>View your feedback</p>
+            </a>
+
+            <a href="profile.html" class="dashboard-card">
+                <div class="icon">👤</div>
+                <h3>Profile</h3>
+                <p>Manage your profile</p>
+            </a>
+
+            <a href="settings.html" class="dashboard-card">
+                <div class="icon">⚙️</div>
+                <h3>Settings</h3>
+                <p>Customize your experience</p>
+            </a>
+
+        </div>
+            
+           
+
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

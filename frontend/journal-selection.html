@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New Journal | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .selection-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 30px;
+        }
+
+        .selection-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .selection-title h1 {
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .selection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .selection-card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 3px solid transparent;
+        }
+
+        .selection-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: var(--secondary);
+        }
+
+        .selection-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .selection-card h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .selection-card p {
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="selection-container">
+        <div class="selection-title">
+            <h1>📝 Start Your Journal</h1>
+            <p style="color: var(--muted);">Choose how you'd like to write today</p>
+        </div>
+
+        <div class="selection-grid">
+            
+            <!-- Template Option -->
+            <div class="selection-card" onclick="window.location.href='jornal-templates.html'">
+                <div class="selection-icon">📋</div>
+                <h2>Use a Template</h2>
+                <p>Get guided prompts to help structure your thoughts and reflections</p>
+            </div>
+
+            <!-- Simple Journal Option -->
+            <div class="selection-card" onclick="window.location.href='jornal-new.html'">
+                <div class="selection-icon">✍️</div>
+                <h2>Simple Journal</h2>
+                <p>Write freely without any structure or prompts</p>
+            </div>
+
+        </div>
+
+        <div class="back-link">
+            <a href="user-dashboard.html">← Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
