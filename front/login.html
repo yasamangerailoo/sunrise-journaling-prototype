@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Sunrise</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="container" style="max-width:420px">
+        <div class="card">
+
+            <h2 style="text-align:center">🌅 Sunrise</h2>
+
+            <label>Username</label>
+            <input type="text" placeholder="Username">
+
+            <label>Password</label>
+            <input type="password" placeholder="Password">
+
+            <label>Role</label>
+            <select id="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <button onclick="login()">Login</button>
+
+            <p class="small">
+                Don’t have an account?
+                <a href="signup.html">Sign up</a>
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            const role = document.getElementById("role").value;
+
+            if (role === "admin") {
+                window.location.href = "admin-dashboard.html";
+            } else {
+                window.location.href = "dashbord.html";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
