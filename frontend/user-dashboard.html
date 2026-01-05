@@ -7,12 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <style>
-        /* استایل‌های اضافی برای Dashboard */
+        /* Dashboard Styles */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 20px 30px;
             background: var(--card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -26,94 +26,356 @@
         }
 
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
+            box-shadow: 0 4px 12px rgba(255, 183, 3, 0.3);
         }
 
         .user-name {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--text);
         }
 
         .logout-btn {
-            padding: 8px 20px;
+            padding: 10px 24px;
             background: #dc3545;
             color: white;
             border: none;
             border-radius: var(--radius);
             cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
             transition: var(--transition);
             width: auto;
             margin: 0;
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.2);
         }
 
         .logout-btn:hover {
             background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(220, 53, 69, 0.3);
         }
 
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
+        .container-full {
+            max-width: 1400px;
+            margin: 40px auto;
             padding: 20px;
         }
 
+        /* Main Layout: Sidebar + Main Content */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        /* Sidebar with Calendar & Quote */
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Calendar Styles */
+        .calendar-widget {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.6s ease;
+        }
+
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .calendar-month {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .calendar-year {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .calendar-day-name {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .calendar-day:hover {
+            background: #f0f0f0;
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(255, 183, 3, 0.3);
+        }
+
+        .calendar-day.other-month {
+            color: #ddd;
+        }
+
+        /* Quote Widget */
+        .quote-widget {
+            background: linear-gradient(135deg, #fff8e1, #fffef7);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .quote-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .quote-text {
+            font-size: 16px;
+            font-style: italic;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .quote-day {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* NEW: Streak Widget */
+        .streak-widget {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            color: white;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        .streak-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .streak-count {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .streak-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .streak-message {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        /* NEW: Statistics Widget */
+        .stats-widget {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 1.2s ease;
+        }
+
+        .stats-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .mood-chart {
+            margin-top: 15px;
+        }
+
+        /* Main Cards Grid */
+        .dashboard-main {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        /* Card Styles with Varied Sizes */
         .dashboard-card {
             background: var(--card);
-            padding: 30px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            text-align: center;
             cursor: pointer;
             transition: var(--transition);
             text-decoration: none;
             color: var(--text);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
         }
 
         .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Featured Card (Write New Journal) - Bigger */
+        .dashboard-card.featured {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #fff8e1, #ffffff);
+            border: 2px solid var(--primary);
+        }
+
+        .dashboard-card.featured .icon {
+            font-size: 64px;
+        }
+
+        .dashboard-card.featured h3 {
+            font-size: 24px;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .dashboard-card h3 {
             margin-bottom: 10px;
             color: var(--secondary);
+            font-size: 18px;
+            font-weight: 600;
         }
 
         .dashboard-card p {
             font-size: 14px;
             color: var(--muted);
+            margin: 0;
         }
 
-        .icon {
-            font-size: 40px;
-            margin-bottom: 15px;
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-sidebar {
+                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+            }
         }
 
-        .container-full {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
+        @media (max-width: 768px) {
+            .dashboard-main {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-card.featured {
+                grid-column: span 1;
+            }
+
+            .dashboard-sidebar {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container-full">
-        <!-- Header با اطلاعات کاربر -->
+        <!-- Header -->
         <div class="dashboard-header">
             <div class="user-info">
                 <div class="user-avatar" id="userAvatar">U</div>
@@ -125,56 +387,100 @@
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
 
-        <!-- Grid کارت‌ها -->
-        <div class="dashboard-grid">
+        <!-- Main Layout -->
+        <div class="dashboard-layout">
+            <!-- Sidebar: Calendar + Quote + Streak + Stats -->
+            <div class="dashboard-sidebar">
+                <!-- Calendar Widget -->
+                <div class="calendar-widget">
+                    <div class="calendar-header">
+                        <div class="calendar-month" id="calendarMonth">January</div>
+                        <div class="calendar-year" id="calendarYear">2026</div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Day names -->
+                        <div class="calendar-day-name">Su</div>
+                        <div class="calendar-day-name">Mo</div>
+                        <div class="calendar-day-name">Tu</div>
+                        <div class="calendar-day-name">We</div>
+                        <div class="calendar-day-name">Th</div>
+                        <div class="calendar-day-name">Fr</div>
+                        <div class="calendar-day-name">Sa</div>
+                        <!-- Days will be inserted by JavaScript -->
+                    </div>
+                </div>
 
-            <div class="dashboard-grid">
-            
-            <a href="journal-selection.html" class="dashboard-card">
-                <div class="icon">📝</div>
-                <h3>Write New Journal</h3>
-                <p>Start your daily reflection</p>
-            </a>
+                <!-- NEW: Streak Widget -->
+                <div class="streak-widget">
+                    <div class="streak-icon">🔥</div>
+                    <div class="streak-count" id="streakCount">0</div>
+                    <div class="streak-label">Day Streak</div>
+                    <div class="streak-message" id="streakMessage">Start your streak today!</div>
+                </div>
 
-            <a href="journal-history.html" class="dashboard-card">
-                <div class="icon">📚</div>
-                <h3>View History</h3>
-                <p>See your past journals</p>
-            </a>
+                <!-- NEW: Statistics Widget -->
+                <div class="stats-widget">
+                    <div class="stats-header">📊 Your Stats</div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Journals</span>
+                        <span class="stat-value" id="totalJournals">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last 7 Days</span>
+                        <span class="stat-value" id="recentJournals">0</span>
+                    </div>
+                    <div class="mood-chart">
+                        <div class="stat-label" style="margin-bottom: 10px;">Mood Distribution</div>
+                        <div id="moodDistribution">Loading...</div>
+                    </div>
+                </div>
 
-            <a href="jornal-templates.html" class="dashboard-card">
-                <div class="icon">📋</div>
-                <h3>Templates</h3>
-                <p>Browse journal templates</p>
-            </a>
+                <!-- Quote Widget -->
+                <div class="quote-widget">
+                    <div class="quote-icon">💡</div>
+                    <div class="quote-text" id="dailyQuote">Loading quote...</div>
+                    <div class="quote-day" id="quoteDay">Monday</div>
+                </div>
+            </div>
 
-            <a href="journal-feedback.html" class="dashboard-card">
-                <div class="icon">💬</div>
-                <h3>Feedback</h3>
-                <p>View your feedback</p>
-            </a>
+            <!-- Main Content: Action Cards -->
+            <div class="dashboard-main">
+                <!-- Featured Card: Write New Journal -->
+                <a href="journal-selection.html" class="dashboard-card featured">
+                    <div class="icon">📝</div>
+                    <h3>Write New Journal</h3>
+                    <p>Start your daily reflection and capture your thoughts</p>
+                </a>
 
-            <a href="profile.html" class="dashboard-card">
-                <div class="icon">👤</div>
-                <h3>Profile</h3>
-                <p>Manage your profile</p>
-            </a>
+                <!-- Regular Cards -->
+                <a href="journal-history.html" class="dashboard-card">
+                    <div class="icon">📚</div>
+                    <h3>View History</h3>
+                    <p>See your past journals</p>
+                </a>
 
-            <a href="settings.html" class="dashboard-card">
-                <div class="icon">⚙️</div>
-                <h3>Settings</h3>
-                <p>Customize your experience</p>
-            </a>
+                <a href="jornal-templates.html" class="dashboard-card">
+                    <div class="icon">📋</div>
+                    <h3>Templates</h3>
+                    <p>Browse journal templates</p>
+                </a>
 
-        </div>
-            
-           
+                <a href="profile.html" class="dashboard-card">
+                    <div class="icon">👤</div>
+                    <h3>Profile</h3>
+                    <p>Manage your profile</p>
+                </a>
 
+                <a href="settings.html" class="dashboard-card">
+                    <div class="icon">⚙️</div>
+                    <h3>Settings</h3>
+                    <p>Customize your experience</p>
+                </a>
+            </div>
         </div>
     </div>
 
     <script src="js/dashboard.js"></script>
-
 </body>
 
 </html>

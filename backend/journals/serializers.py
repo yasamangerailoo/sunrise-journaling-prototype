@@ -29,7 +29,7 @@ class JournalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Journal
-        fields = ['id', 'user', 'template', 'content', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'template', 'content','mood', 'created_at', 'updated_at']
 
 
 class FeedbackSerializer(serializers.ModelSerializer):

@@ -12,11 +12,23 @@ function checkAuth() {
     return true;
 }
 
+// ============ NEW: Get selected mood ============
+function getSelectedMood() {
+    const moodRadios = document.getElementsByName('mood');
+    for (const radio of moodRadios) {
+        if (radio.checked) {
+            return radio.value;
+        }
+    }
+    return null; // No mood selected
+}
+
 // Save Simple Journal
 async function saveSimpleJournal() {
     if (!checkAuth()) return;
 
     const content = document.getElementById('journalContent').value;
+    const mood = getSelectedMood(); // NEW: Get mood
 
     // Validation
     if (!content || content.trim() === '') {
@@ -35,7 +47,8 @@ async function saveSimpleJournal() {
             },
             body: JSON.stringify({
                 content: content,
-                template: null  // Simple journal doesn't use template
+                template: null,  // Simple journal doesn't use template
+                mood: mood       // NEW: Include mood
             })
         });
 
@@ -99,6 +112,15 @@ function displayJournals(journals) {
     
     let html = '';
     
+    // NEW: Mood emoji mapping
+    const moodEmojis = {
+        'very_happy': '😊',
+        'happy': '😀',
+        'neutral': '😐',
+        'sad': '😞',
+        'very_sad': '😢'
+    };
+    
     journals.forEach(journal => {
         const date = new Date(journal.created_at);
         const formattedDate = date.toLocaleDateString('en-US', { 
@@ -110,9 +132,12 @@ function displayJournals(journals) {
         // Get preview (first 100 characters)
         const preview = journal.content.substring(0, 100) + (journal.content.length > 100 ? '...' : '');
         
+        // NEW: Get mood emoji
+        const moodEmoji = journal.mood ? moodEmojis[journal.mood] : '';
+        
         html += `
             <div class="journal-item" onclick="viewJournal(${journal.id})">
-                <div class="journal-date">${formattedDate}</div>
+                <div class="journal-date">${moodEmoji} ${formattedDate}</div>
                 <div class="journal-preview">${preview}</div>
                 <div class="journal-arrow">→</div>
             </div>
@@ -166,7 +191,18 @@ async function loadSingleJournal() {
                 month: 'long',
                 day: 'numeric'
             });
-            dateContainer.textContent = formattedDate;
+            
+            // NEW: Add mood emoji to date
+            const moodEmojis = {
+                'very_happy': '😊',
+                'happy': '😀',
+                'neutral': '😐',
+                'sad': '😞',
+                'very_sad': '😢'
+            };
+            const moodEmoji = data.mood ? moodEmojis[data.mood] + ' ' : '';
+            
+            dateContainer.textContent = moodEmoji + formattedDate;
 
             // Display content
             contentContainer.innerHTML = `<p>${data.content.replace(/\n/g, '<br>')}</p>`;
@@ -230,21 +266,17 @@ function displayTemplates(templates) {
         }
     });
     
-    if (html === '') {
-        templateContainer.innerHTML = '<p style="text-align:center; color: var(--muted);">No active templates available.</p>';
-    } else {
-        templateContainer.innerHTML = html;
-    }
+    templateContainer.innerHTML = html;
 }
 
-// Select a template
+// Select a template and redirect to writing page
 function selectTemplate(templateId) {
     localStorage.setItem('selectedTemplateId', templateId);
     window.location.href = 'template-journal.html';
 }
 
-// Load Template and Prompts
-async function loadTemplatePrompts() {
+// Load Template and Display Prompts
+async function loadTemplateForWriting() {
     if (!checkAuth()) return;
 
     const templateId = localStorage.getItem('selectedTemplateId');
@@ -256,9 +288,13 @@ async function loadTemplatePrompts() {
     }
 
     const token = localStorage.getItem('token');
+    const templateNameElement = document.getElementById('templateName');
+    const promptsContainer = document.getElementById('promptsContainer');
+
+    // Show loading
+    promptsContainer.innerHTML = '<p style="text-align:center; color: var(--muted);">Loading prompts...</p>';
 
     try {
-        // Get template details
         const response = await fetch(`${API_URL}/journals/templates/`, {
             method: 'GET',
             headers: {
@@ -269,75 +305,70 @@ async function loadTemplatePrompts() {
         const templates = await response.json();
 
         if (response.ok) {
-            const template = templates.find(t => t.id == templateId);
+            const template = templates.find(t => t.id === parseInt(templateId));
             
             if (template) {
-                displayTemplatePrompts(template);
+                templateNameElement.textContent = template.title;
+                
+                if (template.prompts && template.prompts.length > 0) {
+                    displayPrompts(template.prompts);
+                } else {
+                    promptsContainer.innerHTML = '<p style="color: var(--muted);">This template has no prompts yet.</p>';
+                }
             } else {
-                alert('Template not found!');
-                window.location.href = 'jornal-templates.html';
+                promptsContainer.innerHTML = '<p style="color: red;">Template not found</p>';
             }
         } else {
-            alert('Error loading template');
+            promptsContainer.innerHTML = '<p style="color: red;">Error loading template</p>';
         }
     } catch (error) {
-        alert('Server connection error: ' + error);
+        promptsContainer.innerHTML = '<p style="color: red;">Server connection error</p>';
     }
 }
 
-// Display Template and Prompts
-function displayTemplatePrompts(template) {
-    // Display template info
-    document.getElementById('templateTitle').textContent = template.title;
-    document.getElementById('templateDescription').textContent = template.description;
-
-    // Hide loading, show prompts
-    document.getElementById('loadingMessage').style.display = 'none';
-    document.getElementById('promptsContainer').style.display = 'block';
-
-    // Get prompts (they come embedded in the template)
-    const prompts = template.prompts || [];
+// Display Prompts for Writing
+function displayPrompts(prompts) {
+    const promptsContainer = document.getElementById('promptsContainer');
     
-    // Sort by order
+    // Sort prompts by order
     prompts.sort((a, b) => a.order - b.order);
-
-    // Display prompts
-    const promptsList = document.getElementById('promptsList');
+    
     let html = '';
-
+    
     prompts.forEach(prompt => {
         html += `
             <div class="prompt-item">
-                <div class="prompt-question">${prompt.order}. ${prompt.text}</div>
+                <label class="prompt-question">${prompt.text}</label>
                 <textarea 
                     class="prompt-answer" 
-                    id="prompt-${prompt.id}" 
                     data-prompt-id="${prompt.id}"
+                    rows="4" 
                     placeholder="Write your answer here..."></textarea>
             </div>
         `;
     });
-
-    promptsList.innerHTML = html;
+    
+    promptsContainer.innerHTML = html;
 }
 
-// Save Template Journal
+// Save Template-based Journal
 async function saveTemplateJournal() {
     if (!checkAuth()) return;
 
     const templateId = localStorage.getItem('selectedTemplateId');
     const token = localStorage.getItem('token');
+    const mood = getSelectedMood(); // NEW: Get mood
 
-    // Collect all answers
+    // Get all answers
     const answerElements = document.querySelectorAll('.prompt-answer');
-    let allAnswers = [];
+    const allAnswers = [];
     let hasEmptyAnswer = false;
 
     answerElements.forEach(textarea => {
+        const promptId = textarea.dataset.promptId;
         const answer = textarea.value.trim();
-        const promptId = textarea.getAttribute('data-prompt-id');
         
-        if (answer === '') {
+        if (!answer) {
             hasEmptyAnswer = true;
         }
         
@@ -370,7 +401,8 @@ async function saveTemplateJournal() {
             },
             body: JSON.stringify({
                 content: content,
-                template: templateId
+                template: templateId,
+                mood: mood  // NEW: Include mood
             })
         });
 

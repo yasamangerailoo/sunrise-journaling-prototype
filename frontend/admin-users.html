@@ -1,23 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Admin | Users</title>
+    <meta charset="UTF-8">
+    <title>Manage Users | Admin</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        .admin-users-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            margin-bottom: 10px;
+        }
+
+        #usersList {
+            margin-bottom: 20px;
+        }
+
+        .user-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .user-card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .user-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-admin {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .user-details {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Manage Users</h1>
-    </header>
+    <div class="admin-users-container">
+        <div class="page-header">
+            <h1>👥 Manage Users</h1>
+            <p style="color: var(--muted);">View and manage user accounts</p>
+        </div>
 
-    <div class="container">
-        <div class="card">John Doe <button>Disable</button></div>
-        <div class="card">Alice Smith <button>Disable</button></div>
+        <div id="usersList">
+            <!-- Users will be loaded here -->
+        </div>
 
-        <a class="button" href="admin-dashboard.html">⬅ Back</a>
+        <div class="back-link">
+            <a href="admin-dashboard.html">← Back to Admin Dashboard</a>
+        </div>
     </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Load users when page loads
+        loadAdminUsers();
+    </script>
 
 </body>
 

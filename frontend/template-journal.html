@@ -28,6 +28,85 @@
             font-size: 15px;
         }
 
+        /* NEW: Mood Selector Styles */
+        .mood-selector {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff8e1, #fffef7);
+            border-radius: var(--radius);
+            border: 2px solid var(--primary);
+        }
+
+        .mood-label {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: block;
+            font-size: 16px;
+        }
+
+        .mood-options {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .mood-option {
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .mood-option input[type="radio"] {
+            display: none;
+        }
+
+        .mood-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 10px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            background: white;
+            border: 2px solid #e0e0e0;
+        }
+
+        .mood-option label:hover {
+            transform: translateY(-3px);
+            border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .mood-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: var(--secondary);
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(255, 183, 3, 0.4);
+        }
+
+        .mood-option input[type="radio"]:checked + label .mood-emoji {
+            transform: scale(1.2);
+        }
+
+        .mood-option input[type="radio"]:checked + label .mood-text {
+            color: white;
+            font-weight: 600;
+        }
+
+        .mood-emoji {
+            font-size: 40px;
+            margin-bottom: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .mood-text {
+            font-size: 13px;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
         .prompts-card {
             background: var(--card);
             padding: 30px;
@@ -91,6 +170,16 @@
             color: var(--muted);
             padding: 40px;
         }
+
+        @media (max-width: 600px) {
+            .mood-options {
+                flex-direction: column;
+            }
+            
+            .mood-option {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 
@@ -98,30 +187,66 @@
 
     <div class="template-journal-container">
         <div class="template-header">
-            <h1 class="template-title" id="templateTitle">Loading...</h1>
+            <h1 class="template-title" id="templateName">Loading...</h1>
             <p class="template-description" id="templateDescription"></p>
         </div>
 
-        <div id="loadingMessage">
-            Loading template...
+        <!-- NEW: Mood Selector -->
+        <div class="mood-selector">
+            <label class="mood-label">How are you feeling today?</label>
+            <div class="mood-options">
+                <div class="mood-option">
+                    <input type="radio" id="mood-very-happy" name="mood" value="very_happy">
+                    <label for="mood-very-happy">
+                        <span class="mood-emoji">😊</span>
+                        <span class="mood-text">Very Happy</span>
+                    </label>
+                </div>
+                <div class="mood-option">
+                    <input type="radio" id="mood-happy" name="mood" value="happy">
+                    <label for="mood-happy">
+                        <span class="mood-emoji">😀</span>
+                        <span class="mood-text">Happy</span>
+                    </label>
+                </div>
+                <div class="mood-option">
+                    <input type="radio" id="mood-neutral" name="mood" value="neutral" checked>
+                    <label for="mood-neutral">
+                        <span class="mood-emoji">😐</span>
+                        <span class="mood-text">Neutral</span>
+                    </label>
+                </div>
+                <div class="mood-option">
+                    <input type="radio" id="mood-sad" name="mood" value="sad">
+                    <label for="mood-sad">
+                        <span class="mood-emoji">😞</span>
+                        <span class="mood-text">Sad</span>
+                    </label>
+                </div>
+                <div class="mood-option">
+                    <input type="radio" id="mood-very-sad" name="mood" value="very_sad">
+                    <label for="mood-very-sad">
+                        <span class="mood-emoji">😢</span>
+                        <span class="mood-text">Very Sad</span>
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div id="promptsContainer" style="display: none;">
-            <div class="prompts-card" id="promptsList">
-                <!-- Prompts will be loaded here -->
-            </div>
+        <div id="promptsContainer">
+            <!-- Prompts will be loaded here -->
+        </div>
 
-            <div class="button-group">
-                <a href="jornal-templates.html" class="cancel-btn">Cancel</a>
-                <button onclick="saveTemplateJournal()">Save Journal</button>
-            </div>
+        <div class="button-group">
+            <a href="jornal-templates.html" class="cancel-btn">Cancel</a>
+            <button onclick="saveTemplateJournal()">Save Journal</button>
         </div>
     </div>
 
     <script src="js/journal.js"></script>
     <script>
         // Load template and prompts when page loads
-        loadTemplatePrompts();
+        loadTemplateForWriting();
     </script>
 
 </body>

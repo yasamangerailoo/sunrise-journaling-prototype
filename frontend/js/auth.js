@@ -69,14 +69,21 @@ async function login() {
         });
 
         const data = await response.json();
-
+        
         if (response.ok) {
-            // Success! Save token
+    // Success! Save token
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
-            
+            localStorage.setItem('is_staff', data.is_staff);  // اضافه شد
             alert('Login successful!');
-            window.location.href = 'user-dashboard.html';
+    
+    // Check if user is admin
+    if (data.is_staff) {
+        window.location.href = 'admin-dashboard.html';
+    } else {
+        window.location.href = 'user-dashboard.html';
+    }
+
         } else {
             // Error
             alert('Login failed: ' + (data.error || 'Invalid credentials'));
