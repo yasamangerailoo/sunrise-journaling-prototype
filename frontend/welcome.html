@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome | Sunrise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .box {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        h1 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+        
+        .options-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 5px;
+        }
+
+        .options-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .options-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .options-container::-webkit-scrollbar-thumb {
+            background: #ff914d;
+            border-radius: 10px;
+        }
+        
+        .option {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 14px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all .3s;
+            font-size: 15px;
+            user-select: none;
+        }
+        
+        .option:hover {
+            background: #fff2e6;
+            border-color: #ff914d;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background: #ff914d;
+            color: white;
+            border-color: #ff914d;
+            font-weight: 600;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all .3s;
+            font-weight: 600;
+        }
+        
+        .btn-signup {
+            background: #ff914d;
+            color: white;
+        }
+
+        .btn-signup:hover {
+            background: #ff7a26;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 145, 77, 0.3);
+        }
+
+        .btn-login {
+            background: white;
+            color: #ff914d;
+            border: 2px solid #ff914d;
+        }
+
+        .btn-login:hover {
+            background: #ff914d;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .small {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .skip-link {
+            margin-top: 10px;
+        }
+
+        .skip-link a {
+            color: #ff914d;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .skip-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 500px) {
+            .box {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🌅 Welcome to Sunrise</h1>
+        <p class="subtitle">What brings you here? (Select all that apply)</p>
+        
+        <div class="options-container">
+            <div class="option" data-value="journaling">Improve my daily journaling</div>
+            <div class="option" data-value="mood">Track my mood</div>
+            <div class="option" data-value="mindfulness">Practice mindfulness</div>
+            <div class="option" data-value="growth">Personal growth</div>
+            <div class="option" data-value="stress">Reduce stress & anxiety</div>
+            <div class="option" data-value="habits">Build better habits</div>
+            <div class="option" data-value="reflect">Reflect on my day</div>
+            <div class="option" data-value="productivity">Increase productivity</div>
+            <div class="option" data-value="emotions">Understand my emotions</div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-signup" onclick="continueToSignup()">Sign Up</button>
+            <button class="btn-login" onclick="continueToLogin()">Log In</button>
+        </div>
+
+        <p class="small">You can change these later in your profile</p>
+        
+        <div class="skip-link">
+            <a href="login.html">Skip for now →</a>
+        </div>
+    </div>
+
+    <script>
+        // Multi-select functionality
+        const options = document.querySelectorAll(".option");
+        const selectedGoals = new Set();
+
+        options.forEach(opt => {
+            opt.addEventListener("click", () => {
+                const value = opt.getAttribute('data-value');
+                
+                if (opt.classList.contains('selected')) {
+                    opt.classList.remove('selected');
+                    selectedGoals.delete(value);
+                } else {
+                    opt.classList.add('selected');
+                    selectedGoals.add(value);
+                }
+            });
+        });
+
+        // Save goals and continue to signup
+        function continueToSignup() {
+            saveGoals();
+            window.location.href = "signup.html";
+        }
+
+        // Save goals and continue to login
+        function continueToLogin() {
+            saveGoals();
+            window.location.href = "login.html";
+        }
+
+        // Save selected goals to localStorage
+        function saveGoals() {
+            if (selectedGoals.size > 0) {
+                const goalsArray = Array.from(selectedGoals);
+                localStorage.setItem('userGoals', JSON.stringify(goalsArray));
+                console.log('Goals saved:', goalsArray);
+            }
+        }
+
+        // Load previously saved goals (if user comes back)
+        function loadSavedGoals() {
+            const saved = localStorage.getItem('userGoals');
+            if (saved) {
+                const goalsArray = JSON.parse(saved);
+                goalsArray.forEach(goal => {
+                    const option = document.querySelector(`[data-value="${goal}"]`);
+                    if (option) {
+                        option.classList.add('selected');
+                        selectedGoals.add(goal);
+                    }
+                });
+            }
+        }
+
+        // Load on page load
+        loadSavedGoals();
+    </script>
+</body>
+</html>

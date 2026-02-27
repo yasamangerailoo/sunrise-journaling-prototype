@@ -141,3 +141,6 @@ REST_FRAMEWORK = {
 
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True  # For Development only!
+
+# OpenAI Configuration
+GEMINI_API_KEY = 'AIzaSyBcGseTTwKuGA_Cc0YRneBeFMI624ToItM'

@@ -10,8 +10,9 @@ from .views import (
     admin_delete_template,
     admin_add_prompt,
     admin_delete_prompt,
-    get_user_streak,  # جدید
-    get_user_statistics  # جدید
+    user_streak,
+    user_statistics,
+    ai_writing_assistant  # جدید
 )
 
 urlpatterns = [
@@ -29,7 +30,10 @@ urlpatterns = [
     path('admin/templates/<int:template_id>/prompts/add/', admin_add_prompt, name='admin-add-prompt'),
     path('admin/prompts/<int:prompt_id>/delete/', admin_delete_prompt, name='admin-delete-prompt'),
 
-    # Statistics & Streak (جدید)
-    path('streak/', get_user_streak, name='user-streak'),
-    path('statistics/', get_user_statistics, name='user-statistics'),
+    # User statistics and streak
+    path('streak/', user_streak, name='user-streak'),
+    path('statistics/', user_statistics, name='user-statistics'),
+
+    # AI Writing Assistant
+    path('ai-assistant/', ai_writing_assistant, name='ai-assistant'),
 ]

@@ -32,7 +32,7 @@
             line-height: 1.6;
         }
 
-        /* NEW: Mood Selector Styles */
+        /* Mood Selector Styles */
         .mood-selector {
             margin: 25px 0;
             padding: 20px;
@@ -111,6 +111,37 @@
             transition: var(--transition);
         }
 
+        /* AI Assistant Button */
+        .ai-helper-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .ai-btn {
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+        }
+
+        .ai-btn:hover {
+            background: linear-gradient(135deg, #7b1fa2, #6a1b9a);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(156, 39, 176, 0.4);
+        }
+
+        .ai-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .button-group {
             display: flex;
             gap: 10px;
@@ -155,7 +186,7 @@
         </div>
 
         <div class="journal-card">
-            <!-- NEW: Mood Selector -->
+            <!-- Mood Selector -->
             <div class="mood-selector">
                 <label class="mood-label">How are you feeling today?</label>
                 <div class="mood-options">
@@ -197,6 +228,13 @@
                 </div>
             </div>
 
+            <!-- AI Assistant Button -->
+            <div class="ai-helper-section">
+                <button class="ai-btn" onclick="getAIHelp()" id="aiButton">
+                    🤖 Ask AI for Writing Help
+                </button>
+            </div>
+
             <label>Your Entry</label>
             <textarea id="journalContent" placeholder="Write about your day, thoughts, feelings..."></textarea>
 
@@ -208,6 +246,64 @@
     </div>
 
     <script src="js/journal.js"></script>
+    <script>
+        // AI Writing Assistant
+        async function getAIHelp() {
+            const token = localStorage.getItem('token');
+            
+            // Check authentication first
+            if (!token) {
+                alert('Please login first!');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const content = document.getElementById('journalContent').value;
+            
+            if (!content.trim()) {
+                alert('💡 Tip: Write a few words first, then AI can help you expand your thoughts!');
+                return;
+            }
+            
+            const helpType = prompt('What do you need help with?\n\n1. Continue writing\n2. Expand my thoughts\n3. Add more detail\n4. Reflect deeper\n\nType your choice or describe what you need:');
+            
+            if (!helpType) return;
+            
+            // Show loading state
+            const aiButton = document.getElementById('aiButton');
+            const originalText = aiButton.textContent;
+            aiButton.textContent = '🤖 Thinking...';
+            aiButton.disabled = true;
+            
+            try {
+                const response = await fetch('http://127.0.0.1:8000/api/journals/ai-assistant/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${token}`
+                    },
+                    body: JSON.stringify({
+                        prompt: helpType,
+                        current_content: content
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    alert('💡 AI Suggestion:\n\n' + data.suggestion);
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Could not get AI help. Please try again.'));
+                }
+            } catch (error) {
+                console.error('AI Helper Error:', error);
+                alert('❌ Connection error. Please check your internet connection and try again.');
+            } finally {
+                aiButton.textContent = originalText;
+                aiButton.disabled = false;
+            }
+        }
+    </script>
 
 </body>
 

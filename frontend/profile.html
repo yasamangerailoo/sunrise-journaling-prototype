@@ -91,6 +91,23 @@
         .back-btn:hover {
             background: #5a6268;
         }
+
+        /* Goals Badges */
+        .goals-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .goal-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -116,6 +133,13 @@
             <div class="profile-field">
                 <label class="profile-label">Member Since</label>
                 <div class="profile-value" id="profileCreated">Loading...</div>
+            </div>
+
+            <div class="profile-field">
+                <label class="profile-label">Your Goals</label>
+                <div id="userGoals" class="goals-badges">
+                    <!-- Goals will be loaded here -->
+                </div>
             </div>
         </div>
 

@@ -1,395 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Manage Templates | Admin</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .admin-templates-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .page-title h1 {
-            margin-bottom: 5px;
-        }
-
-        .add-template-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .add-template-btn:hover {
-            background: #126782;
-        }
-
-        #templatesList {
-            margin-bottom: 20px;
-        }
-
-        .template-card {
-            background: var(--card);
-            padding: 25px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 20px;
-            border: 3px solid transparent;
-            transition: var(--transition);
-        }
-
-        .template-card:hover {
-            border-color: var(--secondary);
-        }
-
-        .template-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 15px;
-        }
-
-        .template-info h3 {
-            color: var(--secondary);
-            margin-bottom: 8px;
-        }
-
-        .template-info p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .template-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-edit {
-            background: #ffc107;
-            color: #000;
-            padding: 8px 16px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .btn-edit:hover {
-            background: #e0a800;
-        }
-
-        .btn-delete {
-            background: #dc3545;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .btn-delete:hover {
-            background: #c82333;
-        }
-
-        .prompts-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--radius);
-            margin-top: 15px;
-        }
-
-        .prompts-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text);
-        }
-
-        .prompt-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
-            color: var(--text);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .prompt-item:last-child {
-            border-bottom: none;
-        }
-
-        .prompt-text {
-            flex: 1;
-        }
-
-        .btn-delete-prompt {
-            background: transparent;
-            color: #dc3545;
-            border: none;
-            cursor: pointer;
-            font-size: 18px;
-            padding: 4px 8px;
-        }
-
-        .btn-delete-prompt:hover {
-            color: #c82333;
-        }
-
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: var(--secondary);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--card);
-            padding: 30px;
-            border-radius: var(--radius);
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            color: var(--secondary);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text);
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: var(--radius);
-            font-family: inherit;
-            font-size: 15px;
-        }
-
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-
-        .prompts-list-editor {
-            margin-top: 20px;
-        }
-
-        .prompt-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .prompt-input-group input {
-            flex: 1;
-        }
-
-        .btn-add-prompt-field {
-            background: var(--secondary);
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .btn-remove-prompt-field {
-            background: #dc3545;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .modal-actions button {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .btn-cancel {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-cancel:hover {
-            background: #5a6268;
-        }
-
-        .btn-save {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-save:hover {
-            background: #126782;
-        }
-    </style>
 </head>
-
 <body>
-
-    <div class="admin-templates-container">
-        <div class="page-header">
-            <div class="page-title">
+    <div style="max-width: 1200px; margin: 40px auto; padding: 20px;">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <div>
                 <h1>📋 Manage Templates</h1>
-                <p style="color: var(--muted);">Add, edit, or delete journal templates</p>
+                <p style="color: #666;">Add, edit, or delete journal templates</p>
             </div>
-            <button class="add-template-btn" onclick="openAddTemplateModal()">
+            <button id="addTemplateBtn" style="background: #1a9cb8; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
                 ➕ Add New Template
             </button>
         </div>
 
-        <div id="templatesList">
-            <!-- Templates will be loaded here -->
+        <!-- Templates List -->
+        <div id="templatesList"></div>
+
+        <!-- Back Link -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="admin-dashboard.html" style="color: #1a9cb8; text-decoration: none;">← Back to Admin Dashboard</a>
         </div>
 
-        <div class="back-link">
-            <a href="admin-dashboard.html">← Back to Admin Dashboard</a>
-        </div>
     </div>
 
-    <!-- Add/Edit Template Modal -->
-    <div id="templateModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modalTitle">Add New Template</h2>
+    <!-- Modal -->
+    <div id="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            
+            <h2 style="color: #1a9cb8; margin-bottom: 20px;">Add New Template</h2>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Template Title *</label>
+                <input type="text" id="templateTitle" placeholder="e.g., Morning Reflection" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px;">
             </div>
 
-            <div class="form-group">
-                <label>Template Title *</label>
-                <input type="text" id="templateTitle" placeholder="e.g., Morning Reflection">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 8px;">Description</label>
+                <textarea id="templateDescription" placeholder="Describe what this template is for..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; min-height: 80px;"></textarea>
             </div>
 
-            <div class="form-group">
-                <label>Description</label>
-                <textarea id="templateDescription" placeholder="Describe what this template is for..."></textarea>
-            </div>
-
-            <div class="prompts-list-editor">
-                <label style="font-weight: 600; display: block; margin-bottom: 10px;">Prompts (Questions)</label>
-                <div id="promptsEditor">
-                    <div class="prompt-input-group">
-                        <input type="text" placeholder="Enter a prompt question..." class="prompt-field">
-                        <button class="btn-add-prompt-field" onclick="addPromptField()">➕</button>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 600; margin-bottom: 10px;">Prompts (Questions)</label>
+                <div id="promptsContainer">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" class="prompt-field" placeholder="Enter a prompt question..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                        <button onclick="window.addPromptFieldFunc()" style="background: #1a9cb8; color: white; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer;">➕</button>
                     </div>
                 </div>
             </div>
 
-            <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeTemplateModal()">Cancel</button>
-                <button class="btn-save" onclick="saveTemplate()">Save Template</button>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="cancelBtn" style="flex: 1; padding: 12px; background: #6c757d; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Cancel</button>
+                <button id="saveBtn" style="flex: 1; padding: 12px; background: #1a9cb8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">Save Template</button>
             </div>
+
         </div>
     </div>
 
-    <script src="js/admin.js"></script>
-    <script src="js/templates-admin.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/templates-admin.js"></script>
     <script>
-        // Backup function - اگه فایل JS لود نشد
-        if (typeof openAddTemplateModal === 'undefined') {
-            function openAddTemplateModal() {
-                document.getElementById('templateModal').classList.add('active');
+        // No external dependencies
+        const TEMPLATES_API = 'http://127.0.0.1:8000/api';
+
+        // Check if admin
+        const token = localStorage.getItem('token');
+        const isStaff = localStorage.getItem('is_staff');
+        if (!token || isStaff !== 'true') {
+            alert('Admin access required!');
+            window.location.href = 'login.html';
+        }
+
+        // Add Prompt Field
+        window.addPromptFieldFunc = function() {
+            const container = document.getElementById('promptsContainer');
+            const div = document.createElement('div');
+            div.style.cssText = 'display: flex; gap: 10px; margin-bottom: 10px;';
+            div.innerHTML = `
+                <input type="text" class="prompt-field" placeholder="Enter a prompt question..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                <button onclick="this.parentElement.remove()" style="background: #dc3545; color: white; padding: 10px 12px; border: none; border-radius: 8px; cursor: pointer;">×</button>
+            `;
+            container.appendChild(div);
+        };
+
+        // Open Modal
+        document.getElementById('addTemplateBtn').onclick = function() {
+            console.log('Button clicked!');
+            document.getElementById('modal').style.display = 'flex';
+            document.getElementById('templateTitle').value = '';
+            document.getElementById('templateDescription').value = '';
+            document.getElementById('promptsContainer').innerHTML = `
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" class="prompt-field" placeholder="Enter a prompt question..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    <button onclick="window.addPromptFieldFunc()" style="background: #1a9cb8; color: white; padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer;">➕</button>
+                </div>
+            `;
+        };
+
+        // Close Modal
+        document.getElementById('cancelBtn').onclick = function() {
+            document.getElementById('modal').style.display = 'none';
+        };
+
+        // Save Template
+        document.getElementById('saveBtn').onclick = async function() {
+            const title = document.getElementById('templateTitle').value.trim();
+            const description = document.getElementById('templateDescription').value.trim();
+
+            if (!title) {
+                alert('Please enter a template title!');
+                return;
             }
-            
-            function closeTemplateModal() {
-                document.getElementById('templateModal').classList.remove('active');
+
+            const promptFields = document.querySelectorAll('.prompt-field');
+            const prompts = [];
+            promptFields.forEach(field => {
+                const text = field.value.trim();
+                if (text) prompts.push(text);
+            });
+
+            try {
+                const response = await fetch(`${TEMPLATES_API}/journals/admin/templates/create/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Token ${token}`
+                    },
+                    body: JSON.stringify({
+                        title: title,
+                        description: description,
+                        prompts: prompts
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Template created successfully! ✅');
+                    document.getElementById('modal').style.display = 'none';
+                    loadTemplates();
+                } else {
+                    alert('Error: ' + JSON.stringify(data));
+                }
+            } catch (error) {
+                alert('Connection error: ' + error.message);
             }
-            
-            function addPromptField() {
-                const promptsEditor = document.getElementById('promptsEditor');
-                const newField = document.createElement('div');
-                newField.className = 'prompt-input-group';
-                newField.innerHTML = `
-                    <input type="text" placeholder="Enter a prompt question..." class="prompt-field">
-                    <button class="btn-remove-prompt-field" onclick="this.parentElement.remove()">×</button>
-                `;
-                promptsEditor.appendChild(newField);
+        };
+
+        // Load Templates
+        async function loadTemplates() {
+            const container = document.getElementById('templatesList');
+            container.innerHTML = '<p style="text-align:center; color:#666;">Loading...</p>';
+
+            try {
+                const response = await fetch(`${TEMPLATES_API}/journals/templates/`, {
+                    headers: { 'Authorization': `Token ${token}` }
+                });
+
+                const templates = await response.json();
+
+                if (response.ok) {
+                    if (templates.length === 0) {
+                        container.innerHTML = '<p style="text-align:center; color:#666;">No templates yet. Add your first template!</p>';
+                    } else {
+                        let html = '';
+                        templates.forEach(template => {
+                            const prompts = template.prompts || [];
+                            html += `
+                                <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                                    <h3 style="color: #1a9cb8; margin-bottom: 8px;">${template.title}</h3>
+                                    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">${template.description || 'No description'}</p>
+                                    ${prompts.length > 0 ? `
+                                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                            <div style="font-weight: 600; margin-bottom: 10px;">📝 Prompts (${prompts.length}):</div>
+                                            ${prompts.sort((a,b) => a.order - b.order).map(p => `
+                                                <div style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">${p.order}. ${p.text}</div>
+                                            `).join('')}
+                                        </div>
+                                    ` : '<p style="color:#999; font-size:14px;">No prompts yet</p>'}
+                                </div>
+                            `;
+                        });
+                        container.innerHTML = html;
+                    }
+                } else {
+                    container.innerHTML = '<p style="color:red;">Error loading templates</p>';
+                }
+            } catch (error) {
+                container.innerHTML = '<p style="color:red;">Connection error</p>';
             }
         }
-        
-        // Load templates when page loads
-        loadAdminTemplates();
+
+        // Load on page load
+        loadTemplates();
+
+        console.log('Script loaded successfully!');
     </script>
 </body>
-    <script>
-        // Load templates when page loads
-        loadAdminTemplates();
-    </script>
-
-</body>
-
 </html>

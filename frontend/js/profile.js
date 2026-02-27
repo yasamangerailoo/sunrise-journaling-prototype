@@ -54,6 +54,40 @@ function displayProfile(profile) {
         month: 'long',
         day: 'numeric'
     });
+    
+    // Display user goals
+    displayUserGoals();
+}
+
+// Display User Goals
+function displayUserGoals() {
+    const goalsContainer = document.getElementById('userGoals');
+    const saved = localStorage.getItem('userGoals');
+    
+    if (saved) {
+        const goals = JSON.parse(saved);
+        const goalLabels = {
+            'journaling': '📝 Daily Journaling',
+            'mood': '😊 Mood Tracking',
+            'mindfulness': '🧘 Mindfulness',
+            'growth': '🌱 Personal Growth',
+            'stress': '😌 Stress Relief',
+            'habits': '✅ Better Habits',
+            'reflect': '💭 Daily Reflection',
+            'productivity': '🎯 Productivity',
+            'emotions': '💙 Emotional Awareness'
+        };
+        
+        let html = '';
+        goals.forEach(goal => {
+            const label = goalLabels[goal] || goal;
+            html += `<span class="goal-badge">${label}</span>`;
+        });
+        
+        goalsContainer.innerHTML = html || '<span style="color: var(--muted); font-size: 14px;">No goals set yet</span>';
+    } else {
+        goalsContainer.innerHTML = '<span style="color: var(--muted); font-size: 14px;">No goals set yet</span>';
+    }
 }
 
 // Save Profile
