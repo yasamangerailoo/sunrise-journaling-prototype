@@ -12,7 +12,8 @@ from .views import (
     admin_delete_prompt,
     user_streak,
     user_statistics,
-    ai_writing_assistant  # جدید
+    ai_writing_assistant,  # جدید
+    ai_weekly_overview
 )
 
 urlpatterns = [
@@ -36,4 +37,7 @@ urlpatterns = [
 
     # AI Writing Assistant
     path('ai-assistant/', ai_writing_assistant, name='ai-assistant'),
+
+    # AI Weekly Overview
+    path('ai-overview/', ai_weekly_overview, name='ai-weekly-overview'),
 ]

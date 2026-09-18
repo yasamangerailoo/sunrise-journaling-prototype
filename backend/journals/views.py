@@ -10,6 +10,9 @@ from django.db.models import Count
 from django.conf import settings
 import google.generativeai as genai
 import random
+
+if settings.GEMINI_API_KEY:
+    genai.configure(api_key=settings.GEMINI_API_KEY)
 class PromptListCreateView(generics.ListCreateAPIView):
     queryset = Prompt.objects.all()
     serializer_class = PromptSerializer
@@ -439,4 +442,74 @@ def ai_writing_assistant(request):
     return Response({
         'success': True,
         'suggestion': suggestion
+    })
+
+
+# ---------------- AI Weekly Overview ----------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def ai_weekly_overview(request):
+    """
+    Reads the user's journals from the last 7 days and asks Gemini for a short
+    overview of what's been on their mind - recurring topics, worries, wins.
+    """
+    if not settings.GEMINI_API_KEY:
+        return Response({
+            'success': False,
+            'error': 'AI service is not configured. Missing GEMINI_API_KEY.'
+        }, status=503)
+
+    user_profile = request.user.userprofile
+    since = timezone.now() - timedelta(days=7)
+
+    journals = Journal.objects.filter(
+        user=user_profile,
+        created_at__gte=since
+    ).order_by('created_at')
+
+    if not journals.exists():
+        return Response({
+            'success': False,
+            'error': 'No journal entries found in the last 7 days. Write a few entries first!'
+        })
+
+    mood_labels = dict(Journal.MOOD_CHOICES)
+    entries_text = ''
+    for journal in journals:
+        date_str = journal.created_at.strftime('%A, %b %d')
+        mood_str = mood_labels.get(journal.mood, 'not specified')
+        entries_text += f'--- {date_str} (mood: {mood_str}) ---\n{journal.content.strip()}\n\n'
+
+    prompt = (
+        "You are a thoughtful, warm journaling companion. Below are a user's private "
+        "journal entries from the past week. Read them and write a short overview "
+        "(4-6 sentences, second person, no bullet points, no markdown) that reflects back "
+        "to them what seems to have been on their mind this week - recurring topics, people, "
+        "worries, or wins. Be specific and reference real details from their entries, not "
+        "generic advice. Do not diagnose or give medical or psychological advice. End with "
+        "one gentle, open-ended question to encourage further reflection.\n\n"
+        f"{entries_text}"
+    )
+
+    try:
+        model = genai.GenerativeModel('gemini-3.6-flash')
+        result = model.generate_content(prompt)
+        overview_text = (result.text or '').strip()
+        if not overview_text:
+            raise ValueError('Empty response from AI model')
+    except Exception as e:
+        return Response({
+            'success': False,
+            'error': f'Could not generate overview right now: {str(e)}'
+        }, status=502)
+
+    return Response({
+        'success': True,
+        'overview': overview_text,
+        'journal_count': journals.count(),
+        'period': {
+            'from': since.date().isoformat(),
+            'to': timezone.now().date().isoformat()
+        }
     })

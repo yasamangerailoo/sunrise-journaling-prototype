@@ -182,6 +182,40 @@ function renderMoodTrendChart(trendData) {
     new ApexCharts(document.querySelector("#moodTrend"), options).render();
 }
 
+// ---------------- AI Weekly Overview ----------------
+async function getAIWeeklyOverview() {
+    const token = localStorage.getItem('token');
+    const btn = document.getElementById('aiInsightsBtn');
+    const textEl = document.getElementById('aiInsightsText');
+
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Reading your journals...';
+    textEl.textContent = '';
+
+    try {
+        const response = await fetch(`${API_URL}/journals/ai-overview/`, {
+            method: 'GET',
+            headers: { 'Authorization': `Token ${token}` }
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            textEl.textContent = data.overview;
+            btn.textContent = 'Refresh Overview';
+        } else {
+            textEl.textContent = data.error || 'Could not get your overview right now.';
+            btn.textContent = originalLabel;
+        }
+    } catch (error) {
+        textEl.textContent = 'Server connection error. Please try again.';
+        btn.textContent = originalLabel;
+    } finally {
+        btn.disabled = false;
+    }
+}
+
 // ---------------- Run ----------------
 checkAuth();
 renderCalendar();
